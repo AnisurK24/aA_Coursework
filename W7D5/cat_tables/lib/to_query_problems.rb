@@ -36,14 +36,10 @@ def frey_example
   # DO NOT USE A SUBQUERY
 
   execute(<<-SQL)
-    SELECT
-      color_cats.name
-    FROM
-      cats AS freyja_cats
-    JOIN
-      cats AS color_cats ON freyja_cats.color = color_cats.color
-    WHERE
-      freyja_cats.name = 'Freyja';
+    SELECT cats2.name
+    FROM cats AS cats1
+    JOIN cats AS cats2 ON cats1.color = cats2.color
+    WHERE cats1.name = 'Freyja';
   SQL
 end
 
@@ -55,19 +51,13 @@ def frey_example_sub
   # subquery is only performed on one table it is more efficient to use a subquery 
   # in this scenario instead of building the larger table.
   execute(<<-SQL)
-    SELECT
-      cats.name
-    FROM
-      cats
-    WHERE
-      cats.color = (
-                    SELECT  
-                      cats.color
-                    FROM
-                      cats
-                    WHERE
-                      name = 'Freyja'
-                    );
+    SELECT name
+    FROM cats
+    WHERE color = (
+      SELECT color
+      From cats
+      WHERE name = 'Freyja'
+    );
   SQL
 end
 
@@ -80,18 +70,12 @@ def harder_example
   # Whereas in this query it is more efficient to not perform a subquery 
   # because we don't have to do the extra cost of a large subquery.
   execute(<<-SQL)
-    SELECT
-      toys.name, toys.price
-    FROM
-      toys
-    JOIN
-      cattoys ON toys.id = cattoys.toy_id
-    JOIN
-      cats ON cats.id = cattoys.cat_id
-    WHERE
-      cats.breed = 'British Shorthair'
-    ORDER BY
-      toys.name ASC;
+    SELECT toys.name, price
+    FROM toys
+    JOIN cattoys ON cattoys.toy_id = toys.id
+    JOIN cats ON cats.id = cattoys.cat_id
+    WHERE breed = 'British Shorthair'
+    ORDER BY name;
   SQL
 end
 
@@ -102,23 +86,15 @@ def harder_example_sub
 
   # USE A SUBQUERY
   execute(<<-SQL)
-    SELECT
-      toys.name, toys.price
-    FROM
-      toys
-    WHERE 
-      toys.id IN (SELECT
-                    toys.id
-                  FROM 
-                    toys
-                  JOIN 
-                    cattoys ON toys.id = cattoys.toy_id
-                  JOIN 
-                    cats ON cats.id = cattoys.cat_id
-                  WHERE
-                    cats.breed = 'British Shorthair')
-    ORDER BY
-      toys.name ASC;
+    SELECT name, price
+    FROM toys
+    WHERE id IN (
+      SELECT cattoys.toy_id
+      FROM cattoys
+      JOIN cats ON cattoys.cat_id = cats.id
+      WHERE breed = 'British Shorthair'
+    )
+    ORDER BY toys.name;
   SQL
 end
 
@@ -130,11 +106,12 @@ def no_apples_for_blair
 
   # DO NOT USE A SUBQUERY
   execute(<<-SQL)
-  SELECT cats.name FROM cats
-  JOIN cattoys ON cattoys.cat_id = cats.id
-  JOIN toys ON toys.id = cattoys.toy_id
-  Where toys.name = 'Apple' AND cats.name != 'Blair'
-  ORDER BY cats.name ASC;
+    SELECT cats.name
+    FROM cats
+    JOIN cattoys ON cattoys.cat_id = cats.id
+    JOIN toys ON cattoys.toy_id = toys.id
+    WHERE toys.name = 'Apple' AND cats.name != 'Blair'
+    ORDER BY cats.name;
   SQL
 end
 
@@ -146,14 +123,15 @@ def no_apples_for_blair_sub
 
   # USE A SUBQUERY
   execute(<<-SQL)
-  SELECT cats.name FROM cats
-  WHERE cats.name IN (
-    SELECT cats.name FROM cats
-    JOIN cattoys ON cats.id = cattoys.cat_id
-    JOIN toys ON toys.id = cattoys.toy_id
-    WHERE toys.name = 'Apple' AND cats.name != 'Blair'
-  )
-  GROUP BY cats.name;
+    SELECT cats.name
+    FROM cats
+    WHERE cats.name != 'Blair' AND cats.id IN (
+      SELECT cattoys.cat_id
+      FROM cattoys
+      JOIN toys ON toys.id = cattoys.toy_id
+      WHERE toys.name = 'Apple'
+    )
+    ORDER BY cats.name;
   SQL
 end
 
@@ -164,12 +142,12 @@ def toys_that_brendon_owns
 
   # DO NOT USE A SUBQUERY
   execute(<<-SQL)
-  SELECT toys.name
-  FROM toys
-  JOIN cattoys ON cattoys.toy_id = toys.id
-  JOIN cats ON cattoys.cat_id = cats.id
-  WHERE cats.name = 'Brendon' 
-  ORDER BY toys.name ASC;
+    SELECT toys.name
+    FROM toys
+    JOIN cattoys ON cattoys.toy_id = toys.id
+    JOIN cats ON cattoys.cat_id = cats.id
+    WHERE cats.name = 'Brendon'
+    ORDER BY toys.name;
   SQL
 end
 
@@ -179,17 +157,15 @@ def toys_that_brendon_owns_sub
 
   # USE A SUBQUERY
   execute(<<-SQL)
-  SELECT toys.name
-  FROM toys
-  WHERE toys.name IN (
     SELECT toys.name
-    FROM cats
-    JOIN cattoys ON cattoys.cat_id = cats.id
-    JOIN toys ON cattoys.toy_id = toys.id
-    WHERE cats.name = 'Brendon'
-  )
-  GROUP BY toys.name
-  ORDER BY toys.name ASC;
+    FROM toys
+    WHERE toys.id IN (
+      SELECT cattoys.toy_id
+      FROM cattoys
+      JOIN cats ON cattoys.cat_id = cats.id
+      WHERE name = 'Brendon'
+    )
+    ORDER BY toys.name;
   SQL
 end
 
@@ -203,11 +179,7 @@ def price_like_shiny_mouse
 
   # DO NOT USE A SUBQUERY
   execute(<<-SQL) 
-  SELECT toy_name.name, toy_name.price
-  FROM toys AS toy_price
-  JOIN toys AS toy_name ON toy_name.price = toy_price.price
-  WHERE toy_price.name = 'Shiny Mouse' AND toy_name.name != 'Shiny Mouse'
-  ORDER BY toy_name.name ASC;
+  
   SQL
 end
 
@@ -221,12 +193,7 @@ def price_like_shiny_mouse_sub
 
   # USE A SUBQUERY
   execute(<<-SQL) 
-  SELECT toys.name, toys.price FROM toys
-  WHERE toys.name != 'Shiny Mouse' AND toys.price IN (
-    SELECT toys.price FROM toys
-    WHERE toys.name = 'Shiny Mouse'
-  )
-  ORDER BY toys.name ASC;
+  
   SQL
 end
 

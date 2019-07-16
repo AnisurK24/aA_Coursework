@@ -41,7 +41,6 @@ require_relative '../data/query_setup.rb'
 
 # Once that query has reached the desired range move on to the next problem. 
 
-
 def example_index_problem
   # This query can be improved by creating an index for cats.name in your database!
   # Try with and without the index to see the improvement.
@@ -51,11 +50,15 @@ def example_index_problem
   # In the Meowtime postgres database you can run the following to add an index:
   # CREATE INDEX cats_name ON cats(name);
   execute(<<-SQL)
-    
+    EXPLAIN
+      SELECT
+        cats.name
+      FROM
+        cats
+      WHERE
+        cats.name = 'Jet';
   SQL
 end
-
-example_index_problem
 
 def toy_time
   # This query will find the price of the most expensive toy named 'Kiss'.
@@ -66,8 +69,18 @@ def toy_time
   # REMINDER: Only one index is needed per problem! 
   # Get cost within the range of: 32..40
   execute(<<-SQL)
-    
+    EXPLAIN
+      SELECT
+        toys.price
+      FROM
+        toys
+      WHERE
+        toys.name = 'Kiss'
+      ORDER BY
+        toys.price DESC
+      LIMIT 1;
   SQL
+  # CREATE INDEX toys_name ON toys(name);
 end
 
 def gold_cat_toys
@@ -75,8 +88,19 @@ def gold_cat_toys
   
   # Get cost within the range of: 95..600
   execute(<<-SQL)
-    
+    EXPLAIN
+      SELECT
+        toys.name
+      FROM
+        toys
+      JOIN
+        cattoys ON toys.id = cattoys.toy_id
+      JOIN
+        cats ON cats.id = cattoys.cat_id
+      WHERE
+        cats.color = 'Gold';
   SQL
+  # CREATE INDEX cats_color ON cats(color);
 end
 
 def who_owns_thumbs_up
@@ -88,10 +112,19 @@ def who_owns_thumbs_up
   # Get cost within the range of: 4..150
   execute(<<-SQL)
     EXPLAIN
-      
+      SELECT
+        cats.name, cats.color
+      FROM
+        cats
+      JOIN
+        cattoys ON cats.id = cattoys.cat_id
+      JOIN
+        toys ON toys.id = cattoys.toy_id
+      WHERE 
+        toys.name = 'Thumbsup' AND cats.color = 'Pink';
   SQL
+   # CREATE INDEX cat_toys_toy_id ON cattoys(toy_id);
 end
-
 
 def popular_toys
   # Jet the cat has a ton of toys! This query shows the toys Jet has at least two copies of. 
@@ -100,8 +133,23 @@ def popular_toys
   # Get cost within the range of: 30..40
   execute(<<-SQL)
     EXPLAIN
-      
+      SELECT
+        toys.name,
+        COUNT(*)
+      FROM
+        toys
+      JOIN
+        cattoys ON cattoys.toy_id = toys.id
+      JOIN
+        cats ON cats.id = cattoys.cat_id
+      WHERE
+        cats.name = 'Jet'
+      GROUP BY
+        toys.name
+      HAVING
+        COUNT(*) >= 2;
   SQL
+     # CREATE INDEX cat_toys_cat_id ON cattoys(cat_id);
 end
 
 

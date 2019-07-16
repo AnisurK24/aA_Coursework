@@ -36,12 +36,7 @@ def example_find_jet
 #  CREATE INDEX cats_name ON cats(name)
 
 execute(<<-SQL)
-  SELECT
-    cats.name
-  FROM
-    cats
-  WHERE 
-    cats.name = 'Jet'
+  
   SQL
 end
 
@@ -52,13 +47,7 @@ def cats_and_toys_alike
   # Order alphabetically by cat name
   # Get your overall cost lower than: 590
   execute(<<-SQL)
-  SELECT cats.name
-  FROM cats
-  JOIN cattoys ON cattoys.cat_id = cats.id
-  JOIN toys ON toys.id = cattoys.toy_id
-  WHERE cats.color = 'Blue' AND toys.color = 'Blue'
-  GROUP BY cats.name
-  ORDER BY cats.name ASC;
+  
   SQL
 end
 
@@ -67,12 +56,7 @@ def toyless_blue_cats
 
   # Get your overall cost lower than: 95
   execute(<<-SQL)
-  SELECT cats.name FROM cats
-  JOIN cattoys ON cattoys.cat_id = cats.id
-  JOIN toys ON toys.id = cattoys.toy_id
-  Where cats.color = 'Navy Blue' AND toys.id NOT IN (
-    SELECT toys.id FROM toys
-  );
+  
   SQL
 end
 
@@ -83,7 +67,7 @@ def find_unknown
 
   # Get your overall cost lower than: 406
   execute(<<-SQL)
-
+  
   SQL
 end
 
