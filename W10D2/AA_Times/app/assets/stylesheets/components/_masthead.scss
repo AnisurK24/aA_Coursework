@@ -72,3 +72,11 @@
 .masthead-links strong {
 	color: green;
 }
+
+.masthead-links li:last-child {
+	border: none;
+}
+
+.language-nav li:first-of-type a {
+	font-weight: bold;
+}
