@@ -1,0 +1,86 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    width: 200px;
+    justify-content: center;
+    margin: auto;
+}
+
+
+h1 {
+    padding-top: 10px;
+    font-family: 'Righteous', cursive; 
+    margin: auto;
+     
+}
+h1:last-of-type {
+    color: salmon;
+}
+h1:first-of-type {
+    color: cornflowerblue;
+}
+
+.ttt {
+    margin: auto;
+    padding: auto;
+}
+.ttt-grid{
+    list-style: none;
+    display: flex;
+    width: 270px;
+    height: auto;
+    flex-wrap: wrap;
+}
+
+.ttt-grid li{
+    width: 60px; 
+    height: 60px;
+    background: cornflowerblue; 
+    margin: 3px;
+    border: 5px solid black;
+    overflow: hidden;
+}
+
+.ttt-grid li:hover {
+    background: salmon;
+}
+
+figcaption {
+    font-family: 'Righteous', cursive; 
+    margin: auto;
+    font-size: 32px;
+    width: fit-content;
+}
+
+.x {
+    background: aqua;
+}
+
+.o {
+    background: salmon;
+}
+
+.x:after {
+    content: "X";
+    font-family: 'Righteous', cursive; 
+    font-size: 50px;
+    justify-content: center;
+    display: flex;
+    background: salmon;
+}
+
+
+.o:after {
+    content: "O";
+    font-family: 'Righteous', cursive; 
+    font-size: 50px;
+    justify-content: center;
+    display: flex;
+    background: aquamarine;
+}
+
