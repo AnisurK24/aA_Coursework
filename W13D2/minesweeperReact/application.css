@@ -1,0 +1,86 @@
+#main {
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  color: salmon;
+  font-size: 24px;
+  text-align: center;
+  font-family: 'Lacquer';
+}
+
+p {
+  font-size: 13px;
+  text-align: center;
+}
+
+.row {
+  width: 270px;
+  margin: 0 auto;
+}
+
+.row:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.tile {
+  height: 20px;
+  width: 20px;
+  background: lightgray;
+  float: left;
+  border-style: outset;
+  border-width: 2px;
+  line-height: 20px;
+  padding-left: 3px;
+  font-size: 14px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+}
+
+.explored {
+  border-style: inset;
+}
+
+.flagged, .bombed {
+  color: red;
+}
+
+.endtext {
+  color: cornflowerblue;
+  text-align: center;
+  font-family: 'Lacquer';
+}
+
+.play-button {
+  width: 500px;
+  height: 350px;
+  padding: 25px;
+  background-color: blanchedalmond;
+  border: 25px solid green;
+  border-radius: 50px;
+  font-size: 100px;
+  font-family: 'Lacquer';
+  display: flex;
+  color: darkred;
+  margin: 0px auto;
+  box-shadow: 25px 25px rgba(0, 0, 0, 0.2);
+}
+
+.play-button:hover{
+  background-color: red;
+  border: 25px solid limegreen;
+  color: navy;
+
+  cursor: pointer;
+}
+
+.play-button:active{
+  background-color: yellow;
+  box-shadow: 5px 5px #666;
+  transform: translateY(25px) translateX(25px);
+}
