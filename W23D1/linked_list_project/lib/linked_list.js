@@ -168,7 +168,21 @@ class LinkedList {
 
     // TODO: Implement the remove method here
     remove(index) {
+        let node = this.get(index);
+        if (!node) return undefined;
 
+        if (index === this.length) {
+          return !!this.removeTail();
+        } else if (index === 0) {
+          return !!this.removeHead();
+        } else {
+          let prevNode = this.get(index - 1);
+          let nextNode = this.get(index + 1);
+
+          prevNode.next = nextNode;
+          this.length--;
+        }
+        return node;
     }
 
     // TODO: Implement the size method here
