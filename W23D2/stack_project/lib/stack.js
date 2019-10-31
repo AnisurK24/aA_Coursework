@@ -49,6 +49,23 @@ class Stack {
         }
         return ++this.length;
     }
+
+    pop() {
+        if (!this.top) return null;
+        let removed = this.top;
+
+        if (this.top === this.bottom) this.bottom = null;
+
+        this.top = removed.next;
+        removed.next = null;
+
+        this.length--;
+        return removed.value;
+    }
+
+    size() {
+        return this.length;
+    }
 }
 
 exports.Node = Node;
