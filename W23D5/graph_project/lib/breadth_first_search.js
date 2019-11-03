@@ -13,7 +13,7 @@ function breadthFirstSearch(startingNode, targetVal) {
         queue.push(...node.neighbors);
     }
 
-    return null
+    return null;
 }
 
 module.exports = {
