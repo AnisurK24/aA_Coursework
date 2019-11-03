@@ -4,11 +4,12 @@ function numRegions(graph) {
   for (let node in graph) {
     if (depthFirst(node, graph, visited)) count++;
   }
+  return count;
 }
 
-function depthFirst(node, graph, visited = new Set()) {
+function depthFirst(node, graph, visited) {
   if (visited.has(node)) {
-    return;
+    return false;
   }
   visited.add(node);
   graph[node].forEach(neighbor => depthFirst(neighbor, graph, visited));
