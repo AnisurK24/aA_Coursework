@@ -23,6 +23,14 @@ class MaxHeap {
             this.siftUp(parentIdx);
         }        
     }
+    deleteMax(){
+        if(this.array.length === 1) return null
+        if(this.array.length === 2) return this.array.pop();
+        let max = this.array[1];
+        this.array[1] = this.array.pop();
+        this.siftDown(1);
+        return max;
+    }
 }
 
 module.exports = {
