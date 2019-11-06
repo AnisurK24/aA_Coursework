@@ -35,6 +35,23 @@ class Trie {
        }
        node.isTerminal = true;
     }
+
+    searchRecur(word, root=this.root) {
+        if (word.length === 0) {
+            if (root.isTerminal) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        let letter = word[0];
+        if (letter in root.children) {
+            return this.searchRecur(word.slice(1), root.children[letter]);
+        } else {
+            return false;
+        }
+    }
 }
 
 module.exports = {
