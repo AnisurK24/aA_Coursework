@@ -1,27 +1,30 @@
 import React from 'react';
-import Contacts from "./components/contacts";
+import Buildings from "./components/buildings";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contacts: []
+      buildings: []
     };
   }
 
   componentDidMount() {
-    fetch("http://jsonplaceholder.typicode.com/users")
+    fetch("")
       .then(res => res.json())
       .then(data => {
-        this.setState({ contacts: data });
+        this.setState({ buildings: data });
       })
       .catch(console.log);
   }
 
   render() {
-    return (
-      <Contacts contacts={this.state.contacts} />
-    );
+    
+      return (
+      
+        <Buildings buildings={this.state.buildings} />
+      )
+
   }
 }
 
