@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Buildings = ({ buildings }) => {
-    console.log(buildings);
+    // console.log(buildings);
     let keys = ["buildingname", "buildingzone", "id"]
     
     
